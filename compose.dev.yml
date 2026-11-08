@@ -1,0 +1,17 @@
+# Postgres for development and tests. Data lives in memory and is gone after `make down`.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: core
+      POSTGRES_PASSWORD: core
+      POSTGRES_DB: core
+    ports:
+      - "127.0.0.1:55532:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "core"]
+      interval: 2s
+      timeout: 3s
+      retries: 15

@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: core
+          POSTGRES_PASSWORD: core
+          POSTGRES_DB: core
+        ports: ["55532:5432"]
+        options: >-
+          --health-cmd "pg_isready -U core" --health-interval 2s --health-timeout 3s --health-retries 15
+    steps:
+      # Actions are pinned to commit SHAs; the comment names the release.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: "1.26.x"
+      - run: make lint
+      - run: make test
+      - run: make vuln
+      - run: make build
