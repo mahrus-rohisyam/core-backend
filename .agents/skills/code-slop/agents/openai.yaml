@@ -1,0 +1,4 @@
+interface:
+  display_name: "/code-slop"
+  short_description: "Find and remove AI-slop patterns in Go and TypeScript code."
+  default_prompt: "Use $code-slop to review my diff for AI slop."

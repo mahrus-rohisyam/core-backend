@@ -1,0 +1,4 @@
+interface:
+  display_name: "/dependency-check"
+  short_description: "Vet a Go module or npm package before adding or using it."
+  default_prompt: "Use $dependency-check to vet this dependency before we add it."
